@@ -40,7 +40,7 @@ export default function PageCard({ page, onEdit, onDelete }) {
 
         <div className="pt-3 border-t border-slate-100 flex items-center gap-2">
           <a
-            href={`/${page.slug}`}
+            href={`/p/${page.slug}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 inline-flex items-center justify-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors"

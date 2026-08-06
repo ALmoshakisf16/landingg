@@ -14,21 +14,30 @@ export default function LandingPage() {
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
 
+  const [errorDetails, setErrorDetails] = useState('');
+
   useEffect(() => {
     const fetchPage = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${API_URL}/api/pages/${slug}`);
+        setError(false);
+        setErrorDetails('');
+
+        const targetUrl = `${API_URL}/api/pages/${slug}`;
+        const res = await fetch(targetUrl);
         const json = await res.json();
+
         if (json.success && json.data) {
           setPage(json.data);
           document.title = json.data.title;
         } else {
           setError(true);
+          setErrorDetails(json.message || 'الصفحة غير موجودة في قاعدة البيانات');
         }
       } catch (err) {
         console.error('Error loading landing page:', err);
         setError(true);
+        setErrorDetails(`فشل الاتصال بالباك اند على الرابط: ${API_URL}`);
       } finally {
         setLoading(false);
       }
@@ -95,7 +104,12 @@ export default function LandingPage() {
     return (
       <div style={{ background: '#f8fafc', color: '#0f172a', minHeight: '100vh', padding: '100px 20px', textAlign: 'center', fontFamily: "'Cairo', sans-serif" }}>
         <h1 style={{ fontSize: '36px', marginBottom: '16px' }}>404 - الصفحة غير موجودة</h1>
-        <p style={{ color: '#64748b' }}>عذراً، الصفحة التي تبحث عنها غير متوفرة أو تم حذفها.</p>
+        <p style={{ color: '#64748b', fontSize: '18px', marginBottom: '12px' }}>
+          {errorDetails || 'عذراً، الصفحة التي تبحث عنها غير متوفرة أو تم حذفها.'}
+        </p>
+        <div style={{ marginTop: '20px', padding: '12px', background: '#e2e8f0', borderRadius: '8px', display: 'inline-block', fontSize: '14px', color: '#334155' }}>
+          الرابط المطلوب (Slug): <strong>{slug}</strong>
+        </div>
       </div>
     );
   }
