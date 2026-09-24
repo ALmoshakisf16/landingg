@@ -3,6 +3,7 @@ import { X, Loader2, Upload } from 'lucide-react';
 
 export default function PageModal({ isOpen, onClose, onSave, editingPage }) {
   const [form, setForm] = useState({
+    internalName: '',
     title: '',
     description: '',
     whatsappNumber: '',
@@ -16,6 +17,7 @@ export default function PageModal({ isOpen, onClose, onSave, editingPage }) {
   useEffect(() => {
     if (editingPage) {
       setForm({
+        internalName: editingPage.internalName || '',
         title: editingPage.title || '',
         description: editingPage.description || '',
         whatsappNumber: editingPage.whatsappNumber || '',
@@ -25,6 +27,7 @@ export default function PageModal({ isOpen, onClose, onSave, editingPage }) {
       setImagePreview(editingPage.productImage || '');
     } else {
       setForm({
+        internalName: '',
         title: '',
         description: '',
         whatsappNumber: '',
@@ -50,6 +53,7 @@ export default function PageModal({ isOpen, onClose, onSave, editingPage }) {
     e.preventDefault();
     setLoading(true);
     const data = new FormData();
+    data.append('internalName', form.internalName);
     data.append('title', form.title);
     data.append('description', form.description);
     data.append('whatsappNumber', form.whatsappNumber);
@@ -84,6 +88,19 @@ export default function PageModal({ isOpen, onClose, onSave, editingPage }) {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* اسم داخلي للتنظيم فقط */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3.5">
+            <label className="block text-xs font-bold text-amber-800 mb-1.5">
+              🏷️ الاسم الداخلي 
+            </label>
+            <input
+              type="text"
+              className="w-full px-3.5 py-2.5 bg-white border border-amber-200 rounded-lg text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:bg-white transition-all"
+              value={form.internalName}
+              onChange={(e) => update('internalName', e.target.value)}
+            />
+          </div>
+
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-1.5">
               عنوان صفحة الهبوط *

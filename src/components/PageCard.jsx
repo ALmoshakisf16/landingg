@@ -16,6 +16,11 @@ export default function PageCard({ page, onEdit, onDelete }) {
       </div>
 
       <div className="p-5 flex-1 flex flex-col">
+        {page.internalName ? (
+          <div className="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold px-2.5 py-1 rounded-md mb-3 self-start">
+            🏷️ {page.internalName}
+          </div>
+        ) : null}
         <h3 className="font-bold text-slate-900 text-lg mb-2 line-clamp-1">
           {page.title}
         </h3>
