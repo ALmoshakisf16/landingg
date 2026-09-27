@@ -44,14 +44,17 @@ export default function Dashboard() {
     setIsModalOpen(true);
   };
 
-  const handleSavePage = async (formData, slug) => {
+  const handleSavePage = async (pageData, slug) => {
     try {
       const url = slug ? `${API_URL}/api/pages/${slug}` : `${API_URL}/api/pages`;
       const method = slug ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
         method,
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(pageData),
       });
 
       const json = await res.json();
@@ -68,7 +71,7 @@ export default function Dashboard() {
   };
 
   const handleDeletePage = async (slug) => {
-    if (!confirm('هل أنت تأكد من رغبتك في حذف هذه الصفحة؟')) return;
+    if (!confirm('هل أنت متأكد من رغبتك في حذف هذه الصفحة؟')) return;
 
     try {
       const res = await fetch(`${API_URL}/api/pages/${slug}`, {
@@ -146,7 +149,7 @@ export default function Dashboard() {
             </div>
             <h3 className="text-lg font-bold text-slate-900 mb-1">لا توجد صفحات هبوط حالياً</h3>
             <p className="text-slate-500 text-sm mb-6 max-w-sm mx-auto">
-              يمكنك إضافة أول صفحة هبوط بسهولة وتحديد صورة المنتج ورقم الواتساب والبيكسلات
+              يمكنك إنشاء صفحة هبوط فورية فقط بإدخال رقم الواتساب وبيكسلات التتبع
             </p>
             <button
               onClick={handleOpenAdd}
