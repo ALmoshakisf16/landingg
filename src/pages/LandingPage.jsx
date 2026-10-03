@@ -93,7 +93,9 @@ export default function LandingPage() {
     );
   }
 
-  const waUrl = `https://api.whatsapp.com/send?phone=${page.whatsappNumber}&text=${encodeURIComponent('مرحباً، أريد عرض سعر لتأمين السيارة')}`;
+  const waUrl = page?.whatsappNumber
+    ? `https://api.whatsapp.com/send?phone=${page.whatsappNumber}&text=${encodeURIComponent('مرحباً، أريد عرض سعر لتأمين السيارة')}`
+    : '#';
 
   const handleWa = () => {
     if (window.snaptr) window.snaptr('track', 'SIGN_UP');

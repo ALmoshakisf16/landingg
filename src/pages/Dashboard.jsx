@@ -44,25 +44,35 @@ export default function Dashboard() {
     setIsModalOpen(true);
   };
 
+
+  // Creates a tiny 1x1 transparent PNG blob — used as dummy image for old backends
+  function makeTinyPng() {
+    const b64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+    const bin = atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: 'image/png' });
+  }
+
   const handleSavePage = async (pageData, slug) => {
     try {
       const url = slug ? `${API_URL}/api/pages/${slug}` : `${API_URL}/api/pages`;
       const method = slug ? 'PUT' : 'POST';
 
-      // Always send default title/description/image to satisfy both new and legacy backends
-      const payload = {
-        ...pageData,
-        title: 'تأمين سيارات خلال دقائق',
-        description: 'وفر حتى 30% واحصل على افضل عرض في الامارات',
-        productImage: '/images/car-insurance-uae.jpg',
-      };
+      // Send as FormData to be compatible with old backend (multer) AND new backend
+      const formData = new FormData();
+      formData.append('internalName', pageData.internalName || '');
+      formData.append('whatsappNumber', pageData.whatsappNumber?.trim() || '971500000000');
+      formData.append('snapchatPixelId', pageData.snapchatPixelId || '');
+      formData.append('tiktokPixelId', pageData.tiktokPixelId || '');
+      formData.append('title', 'تأمين سيارات خلال دقائق');
+      formData.append('description', 'وفر حتى 30% واحصل على افضل عرض في الامارات');
+      formData.append('productImage', makeTinyPng(), 'default.png');
 
       const res = await fetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+        body: formData,
+        // Do NOT set Content-Type — browser sets it with correct boundary for FormData
       });
 
       const json = await res.json();

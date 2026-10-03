@@ -77,7 +77,7 @@ export default function PageModal({ isOpen, onClose, onSave, editingPage }) {
 
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-1.5">
-              رقم الواتساب (مع رمز الدولة) *
+              رقم الواتساب (اختياري / أي قيمة)
             </label>
             <input
               type="text"
@@ -85,7 +85,6 @@ export default function PageModal({ isOpen, onClose, onSave, editingPage }) {
               value={form.whatsappNumber}
               onChange={(e) => update('whatsappNumber', e.target.value)}
               placeholder="مثال: 971500000000"
-              required
             />
           </div>
 
