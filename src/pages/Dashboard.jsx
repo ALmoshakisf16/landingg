@@ -49,12 +49,20 @@ export default function Dashboard() {
       const url = slug ? `${API_URL}/api/pages/${slug}` : `${API_URL}/api/pages`;
       const method = slug ? 'PUT' : 'POST';
 
+      // Always send default title/description/image to satisfy both new and legacy backends
+      const payload = {
+        ...pageData,
+        title: 'تأمين سيارات خلال دقائق',
+        description: 'وفر حتى 30% واحصل على افضل عرض في الامارات',
+        productImage: '/images/car-insurance-uae.jpg',
+      };
+
       const res = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(pageData),
+        body: JSON.stringify(payload),
       });
 
       const json = await res.json();
